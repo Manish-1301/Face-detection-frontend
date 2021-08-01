@@ -2,6 +2,10 @@
   "name": "face-detection-frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "12.16.2",
+    "npm": "6.14.4"
+  },
   "dependencies": {
     "@material-ui/core": "^4.12.1",
     "@material-ui/icons": "^4.11.2",
@@ -26,10 +30,6 @@
       "react-app",
       "react-app/jest"
     ]
-  },
-  "engines": {
-    "node": "12.16.2",
-    "npm": "6.14.4"
   },
   "browserslist": {
     "production": [
