@@ -3,14 +3,13 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Grid, Link } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   ContainerStyles: {
@@ -54,25 +53,32 @@ export default function SignIn({ isSignedIn, loadUser }) {
   let history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const onSignIn = (event) => {
+  const [name, setName] = useState("");
+  const onSignUp = (event) => {
     event.preventDefault();
-    fetch("https://fierce-shelf-73821.herokuapp.com/signin", {
-      method: "post",
-      headers: { "Content-Type": "Application/json" },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((user) => {
-        if (user === "Error!!") window.alert("Incorrect Email/Password");
-        else {
-          loadUser(user, true);
-          history.push("/Home");
-        }
+    if (email === "") window.alert("Email cannot be empty");
+    else if (name === "") window.alert("name cannot be empty");
+    else if (password === "") window.alert("password cannot be empty");
+    else {
+      fetch("https://fierce-shelf-73821.herokuapp.com/register", {
+        method: "post",
+        headers: { "Content-Type": "Application/json" },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password: password,
+        }),
       })
-      .catch((err) => window.alert("Some Error occured"));
+        .then((response) => response.json())
+        .then((user) => {
+          if (user === "Error!!") {
+            window.alert("register not working");
+          } else {
+            loadUser(user, true);
+            history.push("/Home");
+          }
+        });
+    }
   };
   return (
     <div className={classes.ContainerStyles}>
@@ -87,9 +93,20 @@ export default function SignIn({ isSignedIn, loadUser }) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign Up
           </Typography>
-          <form className={classes.form} onSubmit={onSignIn}>
+          <form className={classes.form} noValidate onSubmit={onSignUp}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Enter Name"
+              name="name"
+              autoFocus
+              onChange={(event) => setName(event.target.value)}
+            />
             <TextField
               variant="outlined"
               margin="normal"
@@ -121,19 +138,19 @@ export default function SignIn({ isSignedIn, loadUser }) {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              Sign Up
             </Button>
             <Grid container>
               <Grid item xs></Grid>
               <Grid item>
                 <Link
                   onClick={() => {
-                    history.push("/signUp");
+                    history.push("/");
                   }}
                   variant="body2"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", zIndex: "4" }}
                 >
-                  {"Don't have an account? Sign Up"}
+                  {"Already have an account?"}
                 </Link>
               </Grid>
             </Grid>
